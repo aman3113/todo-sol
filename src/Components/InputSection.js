@@ -6,7 +6,7 @@ const InputSection = ({ itemList, setItemList }) => {
   function handleSubmit(event) {
     if (event.key === "Enter") {
       setText("");
-      setItemList([...itemList, text]);
+      if (!itemList.includes(text)) setItemList([text, ...itemList]);
     }
   }
 
@@ -14,7 +14,7 @@ const InputSection = ({ itemList, setItemList }) => {
     <input
       type="text"
       placeholder="Create a new todo..."
-      className="w-full p-3 rounded-xl dark:bg-[hsl(234, 11%, 52%)] text-[hsl(236, 9%, 61%)] dark:text-[hsl(234, 39%, 85%)]"
+      className="w-full mb-6  p-3 rounded-md  dark:bg-gray-800 text-blue-950 dark:text-gray-200"
       name="inputItem"
       value={text}
       onChange={(e) => setText(e.target.value)}

@@ -21,7 +21,7 @@ const ListElement = ({ text, itemList, setItemList }) => {
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="w-full border-b-2 border-gray-300 py-3 flex justify-between items-center"
+      className="w-full h-[9.5vh] border-b  border-gray-300 p-3 flex justify-between items-center"
     >
       <div className="flex gap-2 items-center">
         <span

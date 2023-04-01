@@ -3,7 +3,7 @@ import ListElement from "./ListElement";
 
 const ListSection = ({ itemList, setItemList }) => {
   return (
-    <div>
+    <div className="h-[47vh]  overflow-y-auto  dark:bg-gray-800">
       {itemList?.map((item, index) => (
         <ListElement
           key={index}
