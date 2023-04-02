@@ -1,10 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import IconCheck from "../images/icon-check.svg";
 
-const ListElement = ({ text, itemList, setItemList }) => {
+const ListElement = ({
+  text,
+  itemList,
+  setItemList,
+  completedTasks,
+  setCompletedTask,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    if (completedTasks.includes(text)) {
+      setIsChecked(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    isChecked
+      ? setCompletedTask([...completedTasks, text])
+      : setCompletedTask(
+          completedTasks?.filter((task) => !task.includes(text))
+        );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isChecked]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -17,6 +38,7 @@ const ListElement = ({ text, itemList, setItemList }) => {
   function handleDelete() {
     setItemList(itemList.filter((item) => item !== text));
   }
+
   return (
     <div
       onMouseEnter={handleMouseEnter}
@@ -39,7 +61,7 @@ const ListElement = ({ text, itemList, setItemList }) => {
           )}
         </span>
         <span
-          className={`text-blue-950 dark:text-gray-200 ${
+          className={`text-blue-950 font-bold dark:font-normal dark:text-gray-200 text-xs md:text-sm ${
             isChecked && "line-through"
           }`}
         >
@@ -48,7 +70,11 @@ const ListElement = ({ text, itemList, setItemList }) => {
       </div>
 
       {isHovered && (
-        <RxCross2 style={{ color: "gray" }} onClick={handleDelete} />
+        <RxCross2
+          size={30}
+          style={{ color: "gray", cursor: "pointer" }}
+          onClick={handleDelete}
+        />
       )}
     </div>
   );

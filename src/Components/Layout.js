@@ -1,13 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 import InputSection from "./InputSection";
 import ListSection from "./ListSection";
 import Details from "./Details";
+import Heading from "./Heading";
 
 const Layout = ({ theme, setTheme }) => {
   const [itemList, setItemList] = useState([]);
   const [completedTasks, setCompletedTask] = useState([]);
+  const [displayList, setDisplayList] = useState([]);
+  const [state, setState] = useState({
+    all: true,
+    active: false,
+    completed: false,
+  });
 
   const initialRef = useRef(true);
 
@@ -15,31 +21,45 @@ const Layout = ({ theme, setTheme }) => {
     if (initialRef.current) {
       initialRef.current = false;
       const storedItems = localStorage.getItem("toDoList");
+      const completedList = localStorage.getItem("completedList");
       storedItems && setItemList(JSON.parse(storedItems));
+      completedList && setCompletedTask(JSON.parse(completedList));
     }
 
     localStorage.setItem("toDoList", JSON.stringify(itemList));
-  }, [itemList]);
+    localStorage.setItem("completedList", JSON.stringify(completedTasks));
+  }, [itemList, completedTasks]);
+
+  useEffect(() => {
+    if (state.all) {
+      setDisplayList(itemList);
+    } else if (state.completed) {
+      setDisplayList(completedTasks);
+    } else if (state.active) {
+      setDisplayList(itemList.filter((item) => !completedTasks.includes(item)));
+    }
+  }, [state, itemList, completedTasks]);
 
   return (
-    <div className="w-[40%] h-[80vh] flex flex-col ">
-      <div className=" mb-8 flex w-full justify-between items-center">
-        <span className="text-4xl text-white font-bold">TODO</span>
-        <span
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          className="cursor-pointer"
-        >
-          {theme === "light" ? (
-            <BsFillMoonFill style={{ color: "white" }} size={30} />
-          ) : (
-            <BsFillSunFill style={{ color: "white" }} size={30} />
-          )}
-        </span>
-      </div>
+    <div className="w-[80%] lg:w-[40%] h-[80vh] flex flex-col ">
+      <Heading theme={theme} setTheme={setTheme} />
       <InputSection itemList={itemList} setItemList={setItemList} />
-      <div className="rounded-md  dark:bg-gray-800">
-        <ListSection itemList={itemList} setItemList={setItemList} />
-        <Details />
+      <div className="rounded-md  dark:bg-gray-800 bg-white">
+        <ListSection
+          displayList={displayList}
+          itemList={itemList}
+          setItemList={setItemList}
+          completedTasks={completedTasks}
+          setCompletedTask={setCompletedTask}
+        />
+        <Details
+          state={state}
+          displayList={displayList}
+          setState={setState}
+          completedTasks={completedTasks}
+          setCompletedTask={setCompletedTask}
+          setItemList={setItemList}
+        />
       </div>
     </div>
   );
