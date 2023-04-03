@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import IconCheck from "../images/icon-check.svg";
+import { Draggable } from "react-beautiful-dnd";
 
 const ListElement = ({
+  index,
   text,
   itemList,
   setItemList,
@@ -40,43 +42,50 @@ const ListElement = ({
   }
 
   return (
-    <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="w-full h-[9.5vh] border-b  border-gray-300 p-3 flex justify-between items-center"
-    >
-      <div className="flex gap-2 items-center">
-        <span
-          className={`w-6 h-6 rounded-[50%] relative cursor-pointer	border-2 border-gray-500 ${
-            isChecked && "bg-purple-400"
-          }`}
-          onClick={() => setIsChecked(!isChecked)}
+    <Draggable draggableId={text} index={index}>
+      {(provided, snapShot) => (
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="w-full h-[9.5vh] border-b  border-gray-300 p-3 flex justify-between items-center"
+          ref={provided.innerRef}
+          {...provided.dragHandleProps}
+          {...provided.draggableProps}
         >
-          {isChecked && (
-            <img
-              src={IconCheck}
-              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-              alt=""
+          <div className="flex gap-2 items-center">
+            <span
+              className={`w-6 h-6 rounded-[50%] relative cursor-pointer	border-2 border-gray-500 ${
+                isChecked && "bg-purple-400"
+              }`}
+              onClick={() => setIsChecked(!isChecked)}
+            >
+              {isChecked && (
+                <img
+                  src={IconCheck}
+                  className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+                  alt=""
+                />
+              )}
+            </span>
+            <span
+              className={`text-blue-950 font-bold dark:font-normal dark:text-gray-200 text-xs md:text-sm ${
+                isChecked && "line-through"
+              }`}
+            >
+              {text}
+            </span>
+          </div>
+
+          {isHovered && (
+            <RxCross2
+              size={30}
+              style={{ color: "gray", cursor: "pointer" }}
+              onClick={handleDelete}
             />
           )}
-        </span>
-        <span
-          className={`text-blue-950 font-bold dark:font-normal dark:text-gray-200 text-xs md:text-sm ${
-            isChecked && "line-through"
-          }`}
-        >
-          {text}
-        </span>
-      </div>
-
-      {isHovered && (
-        <RxCross2
-          size={30}
-          style={{ color: "gray", cursor: "pointer" }}
-          onClick={handleDelete}
-        />
+        </div>
       )}
-    </div>
+    </Draggable>
   );
 };
 

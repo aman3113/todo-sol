@@ -4,6 +4,7 @@ import InputSection from "./InputSection";
 import ListSection from "./ListSection";
 import Details from "./Details";
 import Heading from "./Heading";
+import { DragDropContext } from "react-beautiful-dnd";
 
 const Layout = ({ theme, setTheme }) => {
   const [itemList, setItemList] = useState([]);
@@ -40,28 +41,44 @@ const Layout = ({ theme, setTheme }) => {
     }
   }, [state, itemList, completedTasks]);
 
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+    if (!destination) return;
+    if (destination.index === source.index) return;
+
+    let add,
+      active = displayList;
+    add = active[source.index];
+    active.splice(source.index, 1);
+    active.splice(destination.index, 0, add);
+    console.log(result);
+    setDisplayList(active);
+  };
+
   return (
-    <div className="w-[80%] lg:w-[40%] h-[80vh] flex flex-col ">
-      <Heading theme={theme} setTheme={setTheme} />
-      <InputSection itemList={itemList} setItemList={setItemList} />
-      <div className="rounded-md  dark:bg-gray-800 bg-white">
-        <ListSection
-          displayList={displayList}
-          itemList={itemList}
-          setItemList={setItemList}
-          completedTasks={completedTasks}
-          setCompletedTask={setCompletedTask}
-        />
-        <Details
-          state={state}
-          displayList={displayList}
-          setState={setState}
-          completedTasks={completedTasks}
-          setCompletedTask={setCompletedTask}
-          setItemList={setItemList}
-        />
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="w-[80%] lg:w-[40%] h-[80vh] flex flex-col ">
+        <Heading theme={theme} setTheme={setTheme} />
+        <InputSection itemList={itemList} setItemList={setItemList} />
+        <div className="rounded-md  dark:bg-gray-800 bg-white">
+          <ListSection
+            displayList={displayList}
+            itemList={itemList}
+            setItemList={setItemList}
+            completedTasks={completedTasks}
+            setCompletedTask={setCompletedTask}
+          />
+          <Details
+            state={state}
+            displayList={displayList}
+            setState={setState}
+            completedTasks={completedTasks}
+            setCompletedTask={setCompletedTask}
+            setItemList={setItemList}
+          />
+        </div>
       </div>
-    </div>
+    </DragDropContext>
   );
 };
 
