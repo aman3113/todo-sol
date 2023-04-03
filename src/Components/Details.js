@@ -16,7 +16,7 @@ const Details = ({
     window.location.reload();
   };
   return (
-    <div className="h-[9vh] text-gray-900 border-t p-3 text-sm border-gray-300 dark:text-gray-200 flex justify-between items-center relative">
+    <div className="h-[9vh] rounded-md text-gray-900 border-t p-3 text-sm border-gray-300 dark:text-gray-200 flex justify-between items-center relative">
       <span>{displayList.length} items Left</span>
       <div className="flex gap-3 rounded-md items-center absolute bottom-[-90%] left-[50%] translate-x-[-50%] lg:static lg:translate-x-0  bg-white dark:bg-gray-800 px-4 py-2 lg:p-0">
         <span

@@ -51,7 +51,7 @@ const Layout = ({ theme, setTheme }) => {
     add = active[source.index];
     active.splice(source.index, 1);
     active.splice(destination.index, 0, add);
-    console.log(result);
+
     setDisplayList(active);
   };
 

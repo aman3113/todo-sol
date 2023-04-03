@@ -47,7 +47,10 @@ const ListElement = ({
         <div
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="w-full h-[9.5vh] border-b  border-gray-300 p-3 flex justify-between items-center"
+          className={`w-full h-[9.5vh] border-b  hover:scale-105 hover:px-7 hover:shadow-md  ${
+            snapShot.isDragging &&
+            "border bg-gray-400 dark:bg-gray-600 rounded-lg"
+          } border-gray-300 p-3 flex justify-between items-center `}
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
@@ -78,7 +81,7 @@ const ListElement = ({
 
           {isHovered && (
             <RxCross2
-              size={30}
+              size={25}
               style={{ color: "gray", cursor: "pointer" }}
               onClick={handleDelete}
             />
