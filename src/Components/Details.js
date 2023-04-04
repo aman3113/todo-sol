@@ -13,7 +13,6 @@ const Details = ({
       prev.filter((item) => !completedTasks.includes(item))
     );
     setCompletedTask([]);
-    window.location.reload();
   };
   return (
     <div className="h-[9vh] rounded-md text-gray-900 border-t p-3 text-sm border-gray-300 dark:text-gray-200 flex justify-between items-center relative">

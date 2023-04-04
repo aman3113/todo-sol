@@ -9,12 +9,15 @@ import { DragDropContext } from "react-beautiful-dnd";
 const Layout = ({ theme, setTheme }) => {
   const [itemList, setItemList] = useState([]);
   const [completedTasks, setCompletedTask] = useState([]);
+  const [activeTasks, setActiveTask] = useState([]);
   const [displayList, setDisplayList] = useState([]);
   const [state, setState] = useState({
     all: true,
     active: false,
     completed: false,
   });
+
+  console.log(completedTasks);
 
   const initialRef = useRef(true);
 
@@ -29,17 +32,20 @@ const Layout = ({ theme, setTheme }) => {
 
     localStorage.setItem("toDoList", JSON.stringify(itemList));
     localStorage.setItem("completedList", JSON.stringify(completedTasks));
+    setActiveTask(itemList.filter((item) => !completedTasks.includes(item)));
   }, [itemList, completedTasks]);
 
   useEffect(() => {
     if (state.all) {
       setDisplayList(itemList);
-    } else if (state.completed) {
-      setDisplayList(completedTasks);
-    } else if (state.active) {
-      setDisplayList(itemList.filter((item) => !completedTasks.includes(item)));
     }
-  }, [state, itemList, completedTasks]);
+    if (state.completed) {
+      setDisplayList(completedTasks);
+    }
+    if (state.active) {
+      setDisplayList(activeTasks);
+    }
+  }, [state, itemList, completedTasks, activeTasks]);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;

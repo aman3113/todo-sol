@@ -18,14 +18,17 @@ const ListElement = ({
     if (completedTasks.includes(text)) {
       setIsChecked(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    isChecked
-      ? setCompletedTask([...completedTasks, text])
-      : setCompletedTask(
-          completedTasks?.filter((task) => !task.includes(text))
-        );
+    if (isChecked) {
+      if (!completedTasks.includes(text))
+        setCompletedTask([...completedTasks, text]);
+    } else {
+      setCompletedTask((prev) => prev?.filter((task) => !task.includes(text)));
+      console.log(completedTasks);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChecked]);
 
@@ -39,6 +42,7 @@ const ListElement = ({
 
   function handleDelete() {
     setItemList(itemList.filter((item) => item !== text));
+    setCompletedTask(completedTasks.filter((item) => item !== text));
   }
 
   return (
@@ -47,7 +51,7 @@ const ListElement = ({
         <div
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`w-full h-[9.5vh] border-b  hover:scale-105 hover:px-7 hover:shadow-md  ${
+          className={`w-full h-[9.5vh] border-b  hover:scale-105 hover:px-6 hover:shadow-md  ${
             snapShot.isDragging &&
             "border bg-gray-400 dark:bg-gray-600 rounded-lg"
           } border-gray-300 p-3 flex justify-between items-center `}
