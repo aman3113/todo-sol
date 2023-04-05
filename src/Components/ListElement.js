@@ -12,19 +12,15 @@ const ListElement = ({
   setCompletedTask,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-
-  useEffect(() => {
-    if (completedTasks.includes(text)) {
-      setIsChecked(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [isChecked, setIsChecked] = useState(
+    completedTasks.includes(text) ? true : false
+  );
 
   useEffect(() => {
     if (isChecked) {
       if (!completedTasks.includes(text))
-        setCompletedTask([...completedTasks, text]);
+        setCompletedTask((prev) => [...prev, text]);
+      console.log(completedTasks);
     } else {
       setCompletedTask((prev) => prev?.filter((task) => !task.includes(text)));
       console.log(completedTasks);

@@ -17,8 +17,6 @@ const Layout = ({ theme, setTheme }) => {
     completed: false,
   });
 
-  console.log(completedTasks);
-
   const initialRef = useRef(true);
 
   useEffect(() => {
